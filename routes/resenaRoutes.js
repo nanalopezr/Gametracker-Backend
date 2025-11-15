@@ -1,27 +1,79 @@
-// routes/resenaRoutes.js
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const {
-  crearResena,
-  obtenerResenas,
-  obtenerResenaPorId,
-  actualizarResena,
-  eliminarResena
-} = require('../controllers/resenaController');
 
-// Crear una reseña
-router.post('/', crearResena);
+const Resena = require("../models/Resena");
+const Juego = require("../models/Juego");
 
-// Obtener todas las reseñas o por juego (si se pasa ?juegoId=...)
-router.get('/', obtenerResenas);
+// GET /api/resenas?nombreJuego=texto
+router.get("/", async (req, res) => {
+  try {
+    const { nombreJuego } = req.query;
 
-// Obtener reseña por ID
-router.get('/:id', obtenerResenaPorId);
+    // ➤ SIN filtro → devolver TODAS las reseñas
+    if (!nombreJuego || nombreJuego.trim() === "") {
+      const resenas = await Resena.find().populate("juego", "nombre plataforma");
+      return res.json(resenas);
+    }
 
-// Actualizar reseña
-router.put('/:id', actualizarResena);
+    // ➤ Buscar juegos que coincidan con el nombre
+    const juegos = await Juego.find({
+      nombre: { $regex: nombreJuego, $options: "i" }
+    });
 
-// Eliminar reseña
-router.delete('/:id', eliminarResena);
+    if (juegos.length === 0) {
+      return res.json([]);
+    }
+
+    const ids = juegos.map(j => j._id);
+
+    // ➤ Buscar reseñas asociadas a esos juegos
+    const resenas = await Resena.find({
+      juego: { $in: ids }
+    }).populate("juego", "nombre plataforma");
+
+    res.json(resenas);
+
+  } catch (error) {
+    console.error("🔥 Error en GET /resenas:", error);
+    res.status(500).json({ msg: "Error en el servidor", error: error.message });
+  }
+});
+// POST /api/resenas  → Crear reseña usando nombre del juego
+router.post("/", async (req, res) => {
+  try {
+    const { juego, texto, puntuacion, autor } = req.body;
+
+    // 1️⃣ Buscar el juego por NOMBRE
+    const juegoEncontrado = await Juego.findOne({
+      nombre: { $regex: juego, $options: "i" }
+    });
+
+    if (!juegoEncontrado) {
+      return res.status(400).json({
+        msg: "No existe un juego con ese nombre"
+      });
+    }
+
+    // 2️⃣ Crear reseña usando el ID encontrado
+    const nueva = new Resena({
+      juego: juegoEncontrado._id,
+      texto,
+      puntuacion,
+      autor
+    });
+
+    await nueva.save();
+
+    res.json({ msg: "Reseña creada", reseña: nueva });
+
+  } catch (error) {
+    console.error("🔥 Error al crear reseña:", error);
+    res.status(500).json({
+      msg: "Error al crear la reseña",
+      error: error.message
+    });
+  }
+});
+
 
 module.exports = router;
