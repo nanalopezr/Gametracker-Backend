@@ -13,12 +13,6 @@ const JuegoSchema = new mongoose.Schema({
     required: [true, 'La plataforma es obligatoria']
   },
 
-  genero: {
-    type: String,
-    required: [true, 'El género es obligatorio'],
-    trim: true
-  },
-
   portadaURL: {
     type: String,
     required: false
