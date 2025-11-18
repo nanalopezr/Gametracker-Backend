@@ -52,19 +52,19 @@ exports.actualizarResena = async (req, res) => {
 };
 
 // D - Eliminar reseña
-exports.eliminarResena = async (req, res) => {
-    try {
-        const resena = await Resena.findByIdAndDelete(req.params.id);
+export const eliminarResena = async (req, res) => {
+  try {
+    const id = req.params.id;
 
-        if (!resena) {
-            return res.status(404).json({ msg: 'Reseña no encontrada' });
-        }
+    const eliminada = await Resena.findByIdAndDelete(id);
 
-        res.status(200).json({ msg: 'Reseña eliminada' });
-    } catch (error) {
-        res.status(500).json({
-            error: 'Error al eliminar la reseña',
-            details: error.message
-        });
+    if (!eliminada) {
+      return res.status(404).json({ msg: "Reseña no encontrada" });
     }
+
+    res.json({ msg: "Reseña eliminada" });
+  } catch (error) {
+    res.status(500).json({ msg: "Error al eliminar reseña" });
+  }
 };
+

@@ -73,6 +73,44 @@ router.post("/", async (req, res) => {
   }
 });
 
+// PUT /api/resenas/editar-por-nombre/:nombreJuego
+// PUT /api/resenas/editarPorNombre
+router.put("/editarPorNombre", async (req, res) => {
+  try {
+    const { nombreJuego, texto, puntuacion, autor } = req.body;
+
+    if (!nombreJuego) {
+      return res.status(400).json({ msg: "Debes enviar el nombre del juego" });
+    }
+
+    // Buscar juego por nombre
+    const juego = await Juego.findOne({
+      nombre: { $regex: nombreJuego, $options: "i" }
+    });
+
+    if (!juego) {
+      return res.status(404).json({ msg: "Juego no encontrado" });
+    }
+
+    // Actualizar reseña del juego encontrado
+    const resena = await Resena.findOneAndUpdate(
+      { juego: juego._id },
+      { texto, puntuacion, autor },
+      { new: true }
+    );
+
+    if (!resena) {
+      return res.status(404).json({ msg: "No existe reseña para este juego" });
+    }
+
+    res.json({ msg: "Reseña actualizada", resena });
+
+  } catch (error) {
+    console.error("🔥 Error PUT editarPorNombre:", error);
+    res.status(500).json({ msg: "Error actualizando reseña", error: error.message });
+  }
+});
+
 
 // GET /api/resenas/estadisticas/favorito → Juego favorito
 router.get("/estadisticas/favorito", async (req, res) => {
@@ -171,5 +209,23 @@ router.get("/estadisticas/todos", async (req, res) => {
   }
 });
 
+// 🗑 ELIMINAR RESEÑA POR ID
+router.delete("/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const eliminada = await Resena.findByIdAndDelete(id);
+
+    if (!eliminada) {
+      return res.status(404).json({ msg: "Reseña no encontrada" });
+    }
+
+    res.json({ msg: "Reseña eliminada correctamente" });
+
+  } catch (error) {
+    console.error("🔥 Error DELETE:", error);
+    res.status(500).json({ msg: "Error al eliminar la reseña" });
+  }
+});
 
 module.exports = router;

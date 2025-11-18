@@ -11,6 +11,7 @@ const MONGODB_URL = process.env.MONGODB_URL; // URL de conexión a MongoDB
 // === 🔹 MIDDLEWARES ===
 app.use(cors()); // 👈 Permite que React (puerto 5173) se conecte sin error
 app.use(express.json()); // Permite leer JSON en las solicitudes
+app.use(require("./routes/resenaRoutes"));
 
 
 // === 🔹 CONEXIÓN A LA BASE DE DATOS ===
