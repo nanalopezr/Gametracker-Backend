@@ -1,40 +1,43 @@
-const mongoose = require('mongoose'); // Importa Mongoose para definir esquemas y modelos
+const mongoose = require('mongoose');
 
-// Define el esquema para el videojuego
 const JuegoSchema = new mongoose.Schema({
-
-  nombre: { 
-    type: String, // Tipo de dato String
-    required: [true, 'El nombre del juego es obligatorio'], // Campo obligatorio con mensaje de error
-    trim: true, // Elimina espacios al inicio y fin
-    unique: true // No permite nombres duplicados en la base de datos
+  nombre: {
+    type: String,
+    required: [true, 'El nombre del juego es obligatorio'],
+    trim: true,
+    unique: true
   },
 
   plataforma: {
-    type: String, // Tipo de dato String
-    required: [true, 'La plataforma es obligatoria'] // Campo obligatorio con mensaje
+    type: String,
+    required: [true, 'La plataforma es obligatoria']
   },
 
-  portadaURL: { 
-    type: String, // URL de la portada (imagen) del juego
-    required: false // No es obligatorio
+  genero: {
+    type: String,
+    required: [true, 'El género es obligatorio'],
+    trim: true
+  },
+
+  portadaURL: {
+    type: String,
+    required: false
   },
 
   estado: {
-    type: String, // Tipo de dato String
-    enum: ['Pendiente', 'Jugando', 'Completado'], // Valores permitidos
-    default: 'Pendiente' // Valor por defecto
+    type: String,
+    enum: ['Pendiente', 'Jugando', 'Completado'],
+    default: 'Pendiente'
   },
 
-  horasJugadas: { 
-    type: Number, // Tipo de dato Number
-    default: 0, // Valor inicial 0
-    min: 0 // No permite números negativos
+  horasJugadas: {
+    type: Number,
+    default: 0,
+    min: 0
   }
 
 }, {
-  timestamps: true // Agrega automáticamente campos createdAt y updatedAt
+  timestamps: true
 });
 
-// Exporta el modelo Juego para usarlo en controladores
 module.exports = mongoose.model('Juego', JuegoSchema);

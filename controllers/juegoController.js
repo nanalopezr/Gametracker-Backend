@@ -18,13 +18,13 @@ exports.crearJuego = async (req, res) => {
 // R - Obtener todos los juegos (con filtros)
 exports.obtenerJuegos = async (req, res) => {
   try {
-    const { nombre, plataforma, estado } = req.query; // parámetros de búsqueda
+    const { nombre, plataforma, estado, genero } = req.query;
     let filtro = {};
 
-    // Filtros dinámicos
-    if (nombre) filtro.nombre = { $regex: nombre, $options: "i" }; // búsqueda parcial, sin mayúsculas/minúsculas
+    if (nombre) filtro.nombre = { $regex: nombre, $options: "i" };
     if (plataforma) filtro.plataforma = { $regex: plataforma, $options: "i" };
     if (estado) filtro.estado = estado;
+    if (genero) filtro.genero = { $regex: genero, $options: "i" };
 
     const juegos = await Juego.find(filtro);
     res.status(200).json(juegos);
@@ -33,6 +33,7 @@ exports.obtenerJuegos = async (req, res) => {
     res.status(500).json({ error: "Error al obtener los juegos" });
   }
 };
+
 
 // R - Obtener juego por ID
 exports.obtenerJuegoPorId = async (req, res) => {
