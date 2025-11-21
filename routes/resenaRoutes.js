@@ -32,7 +32,7 @@ router.get("/", async (req, res) => {
     res.json(resenas);
 
   } catch (error) {
-    console.error("🔥 Error en GET /resenas:", error);
+    console.error("Error en GET /resenas:", error);
     res.status(500).json({ msg: "Error en el servidor", error: error.message });
   }
 });
@@ -65,7 +65,7 @@ router.post("/", async (req, res) => {
     res.json({ msg: "Reseña creada", reseña: nueva });
 
   } catch (error) {
-    console.error("🔥 Error al crear reseña:", error);
+    console.error("Error al crear reseña:", error);
     res.status(500).json({
       msg: "Error al crear la reseña",
       error: error.message
@@ -106,7 +106,7 @@ router.put("/editarPorNombre", async (req, res) => {
     res.json({ msg: "Reseña actualizada", resena });
 
   } catch (error) {
-    console.error("🔥 Error PUT editarPorNombre:", error);
+    console.error("Error PUT editarPorNombre:", error);
     res.status(500).json({ msg: "Error actualizando reseña", error: error.message });
   }
 });
@@ -160,13 +160,11 @@ router.get("/estadisticas/favorito", async (req, res) => {
     });
 
   } catch (error) {
-    console.error("🔥 Error en /estadisticas/favorito:", error);
+    console.error("Error en /estadisticas/favorito:", error);
     res.status(500).json({ msg: "Error calculando estadísticas", error: error.message });
   }
 });
 
-
-// ⭐⭐⭐⭐⭐ NUEVA RUTA ⭐⭐⭐⭐⭐
 // GET /api/resenas/estadisticas/todos → estadísticas por cada juego
 router.get("/estadisticas/todos", async (req, res) => {
   try {
@@ -204,7 +202,7 @@ router.get("/estadisticas/todos", async (req, res) => {
     res.json(lista);
 
   } catch (error) {
-    console.error("🔥 Error estadísticas ALL:", error);
+    console.error("Error estadísticas ALL:", error);
     res.status(500).json({ msg: "Error obteniendo estadísticas" });
   }
 });
@@ -223,7 +221,7 @@ router.delete("/:id", async (req, res) => {
     res.json({ msg: "Reseña eliminada correctamente" });
 
   } catch (error) {
-    console.error("🔥 Error DELETE:", error);
+    console.error("Error DELETE:", error);
     res.status(500).json({ msg: "Error al eliminar la reseña" });
   }
 });

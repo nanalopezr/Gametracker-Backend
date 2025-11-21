@@ -24,12 +24,11 @@ exports.obtenerJuegos = async (req, res) => {
     if (nombre) filtro.nombre = { $regex: nombre, $options: "i" };
     if (plataforma) filtro.plataforma = { $regex: plataforma, $options: "i" };
     if (estado) filtro.estado = estado;
-    if (genero) filtro.genero = { $regex: genero, $options: "i" };
 
     const juegos = await Juego.find(filtro);
     res.status(200).json(juegos);
   } catch (error) {
-    console.error("❌ Error al obtener juegos:", error);
+    console.error(" Error al obtener juegos:", error);
     res.status(500).json({ error: "Error al obtener los juegos" });
   }
 };

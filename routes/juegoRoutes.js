@@ -16,7 +16,7 @@ router.post('/', crearJuego);
 router.get('/', obtenerJuegos);
 
 // Obtener un juego por ID
-router.get('/:id', obtenerJuegoPorId);
+//router.get('/:id', obtenerJuegoPorId);
 
 // Actualizar un juego por ID
 router.put('/:id', actualizarJuego);
