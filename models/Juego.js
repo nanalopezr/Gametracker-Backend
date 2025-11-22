@@ -15,7 +15,7 @@ const JuegoSchema = new mongoose.Schema({
 
   portadaURL: {
     type: String,
-    required: false
+    required: false,
   },
 
   estado: {
