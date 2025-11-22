@@ -8,7 +8,7 @@ exports.crearResena = async (req, res) => {
         await nuevaResena.save();
         res.status(201).json(nuevaResena);
     } catch (error) {
-        console.error('Error en crearResena:', error);
+        console.error('Error en crear reseña:', error);
         res.status(400).json({
             error: 'Error al crear la reseña',
             details: error.message
@@ -45,7 +45,7 @@ exports.actualizarResena = async (req, res) => {
         res.status(200).json(resena);
     } catch (error) {
         res.status(400).json({
-            error: 'Error al actualizar la reseña.',
+            error: 'Error en actualizar la reseña.',
             details: error.message
         });
     }
@@ -62,7 +62,7 @@ export const eliminarResena = async (req, res) => {
       return res.status(404).json({ msg: "Reseña no encontrada" });
     }
 
-    res.json({ msg: "Reseña eliminada" });
+    res.json({ msg: "Reseña eliminada correctamente" });
   } catch (error) {
     res.status(500).json({ msg: "Error al eliminar reseña" });
   }

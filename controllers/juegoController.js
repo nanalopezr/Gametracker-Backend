@@ -28,7 +28,7 @@ exports.obtenerJuegos = async (req, res) => {
     const juegos = await Juego.find(filtro);
     res.status(200).json(juegos);
   } catch (error) {
-    console.error(" Error al obtener juegos:", error);
+    console.error(" Error al obtener los juegos:", error);
     res.status(500).json({ error: "Error al obtener los juegos" });
   }
 };
@@ -43,7 +43,7 @@ exports.obtenerJuegoPorId = async (req, res) => {
     }
     res.status(200).json(juego);
   } catch (error) {
-    res.status(500).json({ error: 'Error al obtener el juego' });
+    res.status(500).json({ error: 'Error al obtener juego' });
   }
 };
 
@@ -60,7 +60,7 @@ exports.actualizarJuego = async (req, res) => {
     res.status(200).json(juego);
   } catch (error) {
     res.status(400).json({
-      error: 'Error al actualizar el juego',
+      error: 'Error al actualizar juego',
       details: error.message
     });
   }
